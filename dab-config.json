@@ -1,0 +1,52 @@
+{
+  "$schema": "https://github.com/Azure/data-api-builder/releases/latest/download/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "Server=mssql-2022,1433;Database=Clocky;User Id=clocky-api;Password=Passw0rd;TrustServerCertificate=true;"
+  },
+  "runtime": {
+    "host": {
+      "mode": "development",
+      "authentication": {
+        "provider": "AzureAD",
+        "jwt": {
+          "audience": "api://d71a3962-bc8a-49ea-9200-fbce350172a0",
+          "issuer": "https://sts.windows.net/1a92b2d4-5d6a-4db0-bc17-0f3feaa5e771/"
+        }
+      }
+    },
+    "rest": {
+      "enabled": true,
+      "path": "/api"
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql",
+      "allow-introspection": true      
+    }
+  },
+  "entities": {
+    "ViewSAP": {
+      "source": "[dbo].[ViewSAP]",
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [ { "action": "*" } ]
+        }
+      ]
+    },
+    "Event": {
+      "source": "[dbo].[Events]",
+      "permissions": [
+        {
+          "role": "authenticated",
+          "actions": [ { "action": "read" } ]                   
+        },
+        {
+          "role": "aaaaa1",
+          "actions": [ "delete" ]
+        }
+      ]
+    }
+  }
+}
