@@ -6,7 +6,9 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: '${{ vars.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ vars.AZURE_CONTAINER_APP_NAME }}'
+  AZURE_CONTAINER_REGISTRY: midmac
+  AZURE_CONTAINER_APP_NAME: dab-clocky
+  RESOURCE_GROUP: rg-sql-live
 
 jobs:
   deploy:
@@ -16,18 +18,31 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log in to Azure Container Registry (ACR)
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
-          registry: ${{ vars.AZURE_CONTAINER_REGISTRY }}.azurecr.io
+          registry: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
           username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
       - name: Build and push Docker image to ACR
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }} , ${{ env.IMAGE_NAME }}:latest 
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.AZURE_CONTAINER_APP_NAME }}:${{ github.sha }} , ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.AZURE_CONTAINER_APP_NAME }}:latest
+      
+      - name: Login to Azure
+        uses: azure/login@v3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Deploy to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.AZURE_CONTAINER_APP_NAME }}:${{ github.sha }}
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
+          containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
+          environmentVariables: DATABASE_CONNECTION_STRING=Server=tcp:midmac.database.windows.net,1433;Initial Catalog=ClockyDB;Persist Security Info=False;User ID=ba7d7375-9ffb-43e8-a6a6-e07aac630f61;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Managed Identity;
