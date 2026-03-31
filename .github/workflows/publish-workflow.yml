@@ -45,4 +45,4 @@ jobs:
           imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.AZURE_CONTAINER_APP_NAME }}:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
-          environmentVariables: DATABASE_CONNECTION_STRING=Server=tcp:midmac.database.windows.net,1433;Initial Catalog=ClockyDB;Persist Security Info=False;User ID=ba7d7375-9ffb-43e8-a6a6-e07aac630f61;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Managed Identity;
+          environmentVariables: DATABASE_CONNECTION_STRING=Server=tcp:midmac.database.windows.net,1433;Initial Catalog=ClockyDB;Persist Security Info=False;User ID=77200ca5-d0b2-46b7-8fbb-8e6bd273a44b;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Managed Identity;
