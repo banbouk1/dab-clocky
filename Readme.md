@@ -1,7 +1,7 @@
 # dab-clocky
 
 ## Get a token (client secret)
-curl -X POST -H "Content-Type: application/x-www-form-urlencoded" https://login.microsoftonline.com/TENTANT_ID_GOES_HERE/oauth2/v2.0/token -d 'client_id=CLIENT_ID_GOES_HERE' -d 'client_secret=CLIENT_SECRET_GOES_HERE' -d 'grant_type=client_credentials' -d 'scope=api://DAB_CLIENT_ID_GOES_HERE/.default' 
+curl -X POST -H "Content-Type: application/x-www-form-urlencoded" https://login.microsoftonline.com/TENTANT_ID_GOES_HERE/oauth2/v2.0/token -d 'client_id=XXX' -d 'client_secret=XXX' -d 'grant_type=client_credentials' -d 'scope=api://XXX/.default' 
 
 ## Make a REST API request
 curl -X 'GET' 'http://acaname.randomname.region.azurecontainerapps.io/api/ViewSAP' -H 'accept: application/json' -i --header 'X-MS-API-ROLE: dab.reader' --header 'Authorization: Bearer TOKEN_GOES_HERE'
