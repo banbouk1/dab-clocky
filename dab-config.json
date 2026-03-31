@@ -9,8 +9,8 @@
       "authentication": {
         "provider": "AzureAD",
         "jwt": {
-          "audience": "api://d71a3962-bc8a-49ea-9200-fbce350172a0",
-          "issuer": "https://sts.windows.net/1a92b2d4-5d6a-4db0-bc17-0f3feaa5e771/"
+          "audience": "api://@env('ENTRA_DAB_CLIENT_ID')",
+          "issuer": "https://sts.windows.net/@env('ENTRA_DAB_TENANT_ID')/"
         }
       }
     },
@@ -29,7 +29,7 @@
       "source": "[dbo].[ViewSAP]",
       "permissions": [
         {
-          "role": "reader",
+          "role": "dab.reader",
           "actions": [ { "action": "read" } ]
         }
       ]
